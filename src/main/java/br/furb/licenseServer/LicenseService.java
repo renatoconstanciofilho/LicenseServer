@@ -1,48 +1,48 @@
 package br.furb.licenseServer;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Random;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
 public class LicenseService {
 
     private List<License> licenseList;
-    private final int licenseNumber = 5;
-    private final int licenseSize = 5;
-    private final String randomChar = "abcdefghijlmnopqrstuvxwyzABCDEFAGIJKLMNOPQRSTUVXWYZ0123456789!@#$%&*-+=";
+    private static final int LICENSE_NUMBER = 5;
+    private static final int LICENSE_SIZE = 5;
 
     public LicenseService() {
-        for(int i=0; i<=licenseNumber; i++){
-            licenseList.add(new License(i+1, codeGenerator(licenseSize)));
+        this.licenseList = new ArrayList<>();
+        for(int i = 0; i< LICENSE_NUMBER; i++){
+            licenseList.add(new License(i+1, codeGenerator(LICENSE_SIZE)));
         }
     }
 
     private String codeGenerator(int size) {
-        StringBuilder returnCode = new StringBuilder();
-
-        for(int i=0; i<=size; i++){
-            Random rnd = new Random();
-            returnCode.append(randomChar.charAt(rnd.nextInt(randomChar.length())));
-           }
-
-        return returnCode.toString();
+        return Long.toHexString(Double.doubleToLongBits(Math.random()));
     }
     
     public License licenseGet(){
         for(License l: licenseList){
-            if(l.isAvaliable()){
-                l.setReleaseTime(Instant.now());
-                l.setAvaliable(false);
+            if(l.isAvaliable()) {
                 return l;
             }
         }
+        return null;
     }
 
     public License licenseRenew(License l){
         return null;
     }
 
-    public String licenseReturn(License l){
-        return null;
+    public Boolean licenseReturn(String code){
+        for(License l: licenseList){
+            if(code.equals(l.getCode())){
+                l.setAvaliable(true);
+                return true;
+            }
+        }
+        return false;
     }
 }

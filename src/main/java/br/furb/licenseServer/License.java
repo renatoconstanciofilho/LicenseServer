@@ -1,14 +1,10 @@
 package br.furb.licenseServer;
 
-import java.time.Instant;
-
 public class License {
 
     private int id;
     private String code;
     private boolean avaliable;
-    private Instant releaseTime;
-    private Client client;
 
     public License(int id, String code) {
         setId(id);
@@ -40,15 +36,4 @@ public class License {
         this.avaliable = avaliable;
     }
 
-    public Instant getReleaseTime() {
-        return releaseTime;
-    }
-
-    public void setReleaseTime(Instant releaseTime) {
-        this.releaseTime = releaseTime;
-    }
-
-    public Client getClient() {
-        return client;
-    }
 }
